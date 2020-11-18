@@ -2,3 +2,8 @@ body {
   font-family: 'Roboto Condensed', sans-serif;
   padding: 25px 80px;
 }
+
+a {
+  text-decoration: none;
+  color: black;
+}
