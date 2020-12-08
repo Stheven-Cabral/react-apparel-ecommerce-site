@@ -45,6 +45,7 @@ class App extends React.Component {
     });
   }
   componentWillUnmount() {
+    // Called again when component is unmounting to prevent any memory leaks.
     this.unsubscribeFromAuth();
   }
 
