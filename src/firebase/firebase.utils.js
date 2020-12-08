@@ -27,6 +27,7 @@ export const firestore = firebase.firestore();
 const provider = new firebase.auth.GoogleAuthProvider();
 // This always initiates the google popup when using the Google 'provider' above.
 provider.setCustomParameters({ prompt: 'select_account' });
+
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export default firebase;
