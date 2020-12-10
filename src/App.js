@@ -6,20 +6,15 @@ import ShopPage from './pages/shop/shop.component.jsx';
 import Header from './components/header/header.component.jsx';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-
+import { connect } from 'react-redux';
+import { setCurrentUser } from './redux/user/user.actions';
 
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      currentUser: null
-    }
-  }
-
   unsubscribeFromAuth = null;
   
   componentDidMount() {
+    const {setCurrentUser} = this.props;
+
     // The onAuthStateChanged method from auth automatically updates authentication when user changes.
     // It also keeps the user logged in. The subscription below to auth is always open so it needs to be closed.
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -30,18 +25,16 @@ class App extends React.Component {
           // .data() allows the data to come in as an object and not unusable data.
           // console.log(snapShot.data());
 
-          this.setState({
-            currentUser: {
-              id: snapShot.id,
-              // spread operator automatically concatenates the object to the current state.
-              ...snapShot.data()
-            }
+        setCurrentUser({
+            id: snapShot.id,
+            // spread operator automatically concatenates the object to the current state.
+            ...snapShot.data()
           });
         });
       }
 
       // The below is triggered when userAuth is null from auth.onAuthStateChanged
-      this.setState({ currentUser: userAuth });
+      setCurrentUser(userAuth);
     });
   }
   componentWillUnmount() {
@@ -64,4 +57,11 @@ class App extends React.Component {
   }
 }
 
-export default App;
+// dispatch is a way for redux to know that whatever object your passing me is going to be an action that will be passed to every reducer.
+// You are dispatching the object returned by setCurrentUser
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
+
+// The null below is because we don't state to props
+export default connect(null, mapDispatchToProps)(App);
