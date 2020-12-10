@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/homepage/homepage.component.jsx';
 import ShopPage from './pages/shop/shop.component.jsx';
@@ -49,19 +49,25 @@ class App extends React.Component {
         <Header />
         <Switch>
           <Route exact path='/' component={HomePage} />
-          <Route exact path='/shop' component={ShopPage} />
-          <Route exact path='/signin' component={SignInAndSignUpPage} />
+          <Route path='/shop' component={ShopPage} />
+          {/* render allows you to render a component but talso use JavaScript */}
+          <Route exact path='/signin' render={() => this.props.currentUser ? (<Redirect to='/' />)  : (<SignInAndSignUpPage />)} />
         </Switch>
       </div>
     );
   }
 }
 
-// dispatch is a way for redux to know that whatever object your passing me is going to be an action that will be passed to every reducer.
+// You can destructor user because the redux stat is being provided to all components in index.js
+const mapStateToProps = ({ user }) => ({
+  currenUser: user.currentUser
+})
+
+// Dispatch is a function of the Redux store. You call store.dispatch to dispatch an action. This is the only way to trigger a state change.
 // You are dispatching the object returned by setCurrentUser
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 });
 
 // The null below is because we don't state to props
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
