@@ -58,7 +58,7 @@ class App extends React.Component {
   }
 }
 
-// You can destructor user because the redux stat is being provided to all components in index.js
+// You can destructor user because the redux store is being provided to all components in index.js
 const mapStateToProps = ({ user }) => ({
   currenUser: user.currentUser
 })
@@ -71,3 +71,9 @@ const mapDispatchToProps = dispatch => ({
 
 // The null below is because we don't state to props
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+
+// setCurrentUser is an imported action
+// mapDispatchtoProps sets setCurrentUser inside the component props.
+// it goes throuch the user.actions
+// Then the reducer is triggered which changes the redux store
