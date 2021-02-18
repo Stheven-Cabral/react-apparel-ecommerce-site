@@ -20,7 +20,7 @@ class App extends React.Component {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if(userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-        // onSnapshot is a reference method in order to get a view of the data.
+        // onSnapshot is a reference method in order to get a view of the data. The snapshot itself won't give your the property data such as 'displayName'.
         userRef.onSnapshot(snapShot => {
           // .data() allows the data to come in as an object and not unusable data.
           // console.log(snapShot.data());
@@ -37,8 +37,10 @@ class App extends React.Component {
       setCurrentUser(userAuth);
     });
   }
+
   componentWillUnmount() {
     // Called again when component is unmounting to prevent any memory leaks.
+    // What's happening here is that when we pass our callback to auth.onAuthStateChanged, we are instantiating a new listener to auth state changes with our function that our auth code will manage. Whenever we want to stop listening though, we need to call that function that we got back in order for us to close that listener! This is what's called the observer pattern and is central to the use of observables (which we'll go into detail about in the observer pattern lesson later on in the course.
     this.unsubscribeFromAuth();
   }
 

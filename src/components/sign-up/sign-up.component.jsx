@@ -1,8 +1,6 @@
 import React from 'react';
-
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-
 import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 
 import './sign-up.styles.scss';
@@ -31,11 +29,14 @@ class SignUp extends React.Component {
     }
 
     try {
+      // 'user' object is created by 'createUserWithEmailAndPassword' and is also stored in 'userAuth'
       // In order for createUserWithEmailAndPassword to work you have to enable it in Firebase>Authentication>Sign-In Method
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
       );
+
+      console.log(user);
 
       await createUserProfileDocument(user, { displayName });
 

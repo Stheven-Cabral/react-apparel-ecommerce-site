@@ -57,7 +57,7 @@ class SignIn extends React.Component {
             {/* If you don't give isGoogleSignIn property a value it will automatically be true */}
             <CustomButton type='button' onClick={signInWithGoogle} isGoogleSignIn> {''} Sign In with Google {''} </CustomButton>
           </div>
-        </form>
+        </form> 
       </div>
     )
   }
