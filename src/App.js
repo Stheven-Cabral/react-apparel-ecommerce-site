@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
+import Header from './components/header/header.component.jsx';
 import HomePage from './pages/homepage/homepage.component.jsx';
 import ShopPage from './pages/shop/shop.component.jsx';
-import Header from './components/header/header.component.jsx';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { connect } from 'react-redux';
@@ -13,14 +13,14 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
   
   componentDidMount() {
-    const {setCurrentUser} = this.props;
+    const { setCurrentUser } = this.props;
 
     // The onAuthStateChanged method from auth automatically updates authentication when user changes.
     // It also keeps the user logged in. The subscription below to auth is always open so it needs to be closed.
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if(userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
-        // onSnapshot is a reference method in order to get a view of the data. The snapshot itself won't give your the property data such as 'displayName'.
+        // onSnapshot is a firestore reference method in order to get a view of the data. The snapshot itself won't give your the property data such as 'displayName'.
         userRef.onSnapshot(snapShot => {
           // .data() allows the data to come in as an object and not unusable data.
           // console.log(snapShot.data());

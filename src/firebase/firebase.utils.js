@@ -21,16 +21,19 @@ const config = {
 // createUserProfileDocument will be used in storing user in our firestore database as opposed to authentication database created when you 'sign in with google'.
 // createUserProfileDocument is not a firebase method.
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-  console.log(userAuth)
   // if user is null return nothing.
   if (!userAuth) return;
 
   // A reference is a pointer to the requested object or collection.
-  const userRef = (firestore.doc(`users/${userAuth.uid}`));
-  console.log(userRef)
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+  const collectionRef = firestore.collection('users');
   // You have have to use useRef to get a snapshot of the user in order to perform 'get'.
   const snapShot = await userRef.get();
-  console.log(snapShot)
+
+  const collectionSnapShot = await collectionRef.get();
+  console.log(collectionSnapShot);
+  console.log({ collection: collectionSnapShot.docs.map(doc => doc.data()) });
 
   // exists is a property on a snapshot that lets us know if a snapshot object exists.
   if (!snapShot.exists) {
